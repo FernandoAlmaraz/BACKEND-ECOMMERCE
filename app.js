@@ -14,9 +14,21 @@ app.use(express.json());
 // TODO: Cargar Rutas (lo haremos en Clase 2)
 const productRoutes = require('./src/presentation/routes/product.routes');
 const orderRoutes = require('./src/presentation/routes/order.routes');
+const userRoutes = require('./src/presentation/routes/user.routes');
+const authRoutes = require('./src/presentation/routes/auth.routes');
+const roleRoutes = require('./src/presentation/routes/role.routes');
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/orders', orderRoutes);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/auth', authRoutes); // Usar rutas de autenticación
+app.use('/api/v1/roles', roleRoutes);
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./src/presentation/swagger.config');
 
+// Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+const errorHandler = require('./src/presentation/middlewares/error.handler');
+app.use(errorHandler);
 
 // Healthcheck Endpoint (para probar)
 app.get('/api/v1/healthcheck', (req, res) => {
