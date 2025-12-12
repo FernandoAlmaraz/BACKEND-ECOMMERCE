@@ -154,6 +154,34 @@ const swaggerDefinition = {
           couponCode: { type: 'string', example: 'DESCUENTO20', description: 'Código de cupón opcional' },
           status: { type: 'string', enum: ['pending', 'completed', 'cancelled'], example: 'pending' }
         }
+      },
+        Coupon: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', example: '60c72b2f9b1e8a001f8e4eee' },
+          code: { type: 'string', example: 'DESCUENTO20' },
+          discountType: { type: 'string', enum: ['percentage', 'fixed'], example: 'percentage' },
+          discountValue: { type: 'number', example: 20 },
+          minPurchaseAmount: { type: 'number', example: 100 },
+          maxUses: { type: 'number', nullable: true, example: 100 },
+          usedCount: { type: 'number', example: 15 },
+          expirationDate: { type: 'string', format: 'date-time', nullable: true, example: '2024-12-31T23:59:59Z' },
+          isActive: { type: 'boolean', example: true },
+          createdAt: { type: 'string', format: 'date-time', example: '2024-01-01T00:00:00Z' }
+        }
+      },
+      CouponInput: {
+        type: 'object',
+        required: ['code', 'discountType', 'discountValue'],
+        properties: {
+          code: { type: 'string', example: 'DESCUENTO20', description: 'Código único del cupón (se convertirá a mayúsculas)' },
+          discountType: { type: 'string', enum: ['percentage', 'fixed'], example: 'percentage', description: 'Tipo de descuento: percentage (porcentual) o fixed (monto fijo)' },
+          discountValue: { type: 'number', example: 20, description: 'Valor del descuento (20 para 20% o 100 para $100)' },
+          minPurchaseAmount: { type: 'number', example: 100, description: 'Monto mínimo de compra requerido (opcional, default: 0)' },
+          maxUses: { type: 'number', nullable: true, example: 100, description: 'Número máximo de usos (opcional, null = ilimitado)' },
+          expirationDate: { type: 'string', format: 'date-time', nullable: true, example: '2024-12-31T23:59:59Z', description: 'Fecha de expiración (opcional, null = sin expiración)' },
+          isActive: { type: 'boolean', example: true, description: 'Estado del cupón (opcional, default: true)' }
+        }
       }
     }
   },
