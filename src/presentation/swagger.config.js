@@ -72,18 +72,20 @@ const swaggerDefinition = {
           price: { type: 'number', example: 999.99 },
           stock: { type: 'integer', example: 50 },
           category: { type: 'string', example: 'electronics' },
+          brand: { type: 'string', example: 'HP' },
           imageUrl: { type: 'string', example: 'https://example.com/laptop.jpg' }
         }
       },
       ProductInput: {
         type: 'object',
-        required: ['name', 'description', 'price', 'stock', 'category'],
+        required: ['name', 'description', 'price', 'stock', 'category', 'brand'],
         properties: {
           name: { type: 'string', example: 'Laptop HP' },
           description: { type: 'string', example: 'Laptop HP 15 pulgadas, 8GB RAM' },
           price: { type: 'number', example: 999.99 },
           stock: { type: 'integer', example: 50 },
           category: { type: 'string', example: 'electronics' },
+          brand: { type: 'string', example: 'HP' },
           imageUrl: { type: 'string', example: 'https://example.com/laptop.jpg' }
         }
       },
@@ -112,37 +114,45 @@ const swaggerDefinition = {
         type: 'object',
         properties: {
           id: { type: 'string', example: '60c72b2f9b1e8a001f8e4ddd' },
-          user: { type: 'string', example: '60c72b2f9b1e8a001f8e4caa' },
+          userId: { type: 'string', example: '1234567890' },
           products: {
             type: 'array',
             items: {
               type: 'object',
               properties: {
-                product: { type: 'string', example: '60c72b2f9b1e8a001f8e4ccc' },
+                productId: { type: 'string', example: '60c72b2f9b1e8a001f8e4ccc' },
                 quantity: { type: 'integer', example: 2 }
               }
             }
           },
-          total: { type: 'number', example: 1999.98 },
-          status: { type: 'string', example: 'pending' }
+          description: { type: 'string', example: 'Orden de productos electrónicos' },
+          discount: { type: 'number', example: 100, description: 'Monto del descuento aplicado' },
+          couponCode: { type: 'string', nullable: true, example: 'DESCUENTO20', description: 'Código del cupón aplicado' },
+          totalAmount: { type: 'number', example: 1899.98, description: 'Total final (subtotal - descuento)' },
+          status: { type: 'string', enum: ['pending', 'completed', 'cancelled'], example: 'pending' },
+          createdAt: { type: 'string', format: 'date-time', example: '2024-01-01T00:00:00Z' }
         }
       },
       OrderInput: {
         type: 'object',
-        required: ['user', 'products'],
+        required: ['userId', 'products', 'description', 'subtotal'],
         properties: {
-          user: { type: 'string', example: '60c72b2f9b1e8a001f8e4caa' },
+          userId: { type: 'string', example: '1234567890' },
           products: {
             type: 'array',
             items: {
               type: 'object',
+              required: ['productId', 'quantity'],
               properties: {
-                product: { type: 'string', example: '60c72b2f9b1e8a001f8e4ccc' },
-                quantity: { type: 'integer', example: 2 }
+                productId: { type: 'string', example: '60c72b2f9b1e8a001f8e4ccc' },
+                quantity: { type: 'integer', example: 2, minimum: 1 }
               }
             }
           },
-          status: { type: 'string', example: 'pending' }
+          description: { type: 'string', example: 'Orden de productos electrónicos' },
+          subtotal: { type: 'number', example: 1999.98, description: 'Subtotal antes de aplicar descuentos' },
+          couponCode: { type: 'string', example: 'DESCUENTO20', description: 'Código de cupón opcional' },
+          status: { type: 'string', enum: ['pending', 'completed', 'cancelled'], example: 'pending' }
         }
       }
     }

@@ -2,9 +2,13 @@ const { Router } = require('express');
 const OrderController = require('../controllers/order.controller');
 const OrderService = require('../../application/use-cases/order.service');
 const OrderMongoRepository = require('../../infrastructure/repositories/database/mongo/order.mongo.repository');
+const CouponService = require('../../application/use-cases/coupon.service');
+const CouponMongoRepository = require('../../infrastructure/repositories/database/mongo/coupon.mongo.repository');
 
 const orderRepository = new OrderMongoRepository();
-const orderService = new OrderService(orderRepository);
+const couponRepository = new CouponMongoRepository();
+const couponService = new CouponService(couponRepository);
+const orderService = new OrderService(orderRepository, couponService);
 const orderController = new OrderController(orderService);
 
 const router = Router();

@@ -10,6 +10,7 @@ const orderSchema = new mongoose.Schema({
     }],
     description: { type: String, required: true },
     discount: { type: Number, default: 0 },
+    couponCode: { type: String, default: null, uppercase: true },
     totalAmount: { type: Number, required: true },
     status: { type: String, enum: ['pending', 'completed', 'cancelled'], default: 'pending' },
     createdAt: { type: Date, default: Date.now }

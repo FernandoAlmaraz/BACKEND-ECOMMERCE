@@ -1,8 +1,9 @@
 const Order = require('../../domain/entities/order.entity');
 
 class OrderService {
-    constructor(orderRepository) {
+    constructor(orderRepository, couponService) {
         this.orderRepository = orderRepository;
+        this.couponService = couponService;
     }
 
     async getAllOrders() {
@@ -14,17 +15,39 @@ class OrderService {
     }
 
     async createOrder(orderData) {
+        let discount = 0;
+        let couponCode = null;
+
+        if (orderData.couponCode) {
+            const validation = await this.couponService.validateCoupon(
+                orderData.couponCode,
+                orderData.subtotal || 0
+            );
+
+            if (validation.isValid) {
+                discount = validation.discount;
+                couponCode = orderData.couponCode.toUpperCase();
+                await this.couponService.applyCoupon(orderData.couponCode);
+            } else {
+                throw new Error(validation.message);
+            }
+        }
+
+        const totalAmount = (orderData.subtotal || 0) - discount;
+
         const orderEntity = new Order(
             null,
             orderData.orderId,
             orderData.userId,
             orderData.products,
             orderData.description,
-            orderData.discount || 0,
-            orderData.totalAmount,
+            discount,
+            couponCode,
+            totalAmount,
             orderData.status || 'pending',
             null
         );
+
         return this.orderRepository.create(orderEntity);
     }
 
@@ -36,6 +59,7 @@ class OrderService {
             orderData.products,
             orderData.description,
             orderData.discount,
+            orderData.couponCode,
             orderData.totalAmount,
             orderData.status,
             orderData.createdAt

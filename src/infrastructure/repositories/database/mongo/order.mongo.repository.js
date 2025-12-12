@@ -12,6 +12,7 @@ class OrderMongoRepository extends OrderRepository {
             o.products,
             o.description,
             o.discount,
+            o.couponCode,
             o.totalAmount,
             o.status,
             o.createdAt
@@ -28,6 +29,7 @@ class OrderMongoRepository extends OrderRepository {
             order.products,
             order.description,
             order.discount,
+            order.couponCode,
             order.totalAmount,
             order.status,
             order.createdAt
@@ -41,6 +43,7 @@ class OrderMongoRepository extends OrderRepository {
             products: orderEntity.products,
             description: orderEntity.description,
             discount: orderEntity.discount,
+            couponCode: orderEntity.couponCode,
             totalAmount: orderEntity.totalAmount,
             status: orderEntity.status
         });
@@ -52,6 +55,7 @@ class OrderMongoRepository extends OrderRepository {
             savedOrder.products,
             savedOrder.description,
             savedOrder.discount,
+            savedOrder.couponCode,
             savedOrder.totalAmount,
             savedOrder.status,
             savedOrder.createdAt
@@ -65,6 +69,7 @@ class OrderMongoRepository extends OrderRepository {
             products: orderEntity.products,
             description: orderEntity.description,
             discount: orderEntity.discount,
+            couponCode: orderEntity.couponCode,
             totalAmount: orderEntity.totalAmount,
             status: orderEntity.status
         }, { new: true }).populate('products.productId');
@@ -77,6 +82,7 @@ class OrderMongoRepository extends OrderRepository {
             updatedOrder.products,
             updatedOrder.description,
             updatedOrder.discount,
+            updatedOrder.couponCode,
             updatedOrder.totalAmount,
             updatedOrder.status,
             updatedOrder.createdAt
