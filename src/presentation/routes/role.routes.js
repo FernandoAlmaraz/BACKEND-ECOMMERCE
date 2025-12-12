@@ -3,6 +3,7 @@ const RoleController = require('../controllers/role.controller');
 const RoleService = require('../../application/use-cases/role.service');
 const RoleMongoRepository = require('../../infrastructure/repositories/database/mongo/role.mongo.repository');
 const asyncHandler = require('../utils/async.handler');
+const { authenticateToken, authorizeRoles } = require('../middlewares/auth.middleware');
 
 const roleRepository = new RoleMongoRepository();
 const roleService = new RoleService(roleRepository);
@@ -92,7 +93,7 @@ router.get('/:id', asyncHandler(roleController.getById));
  *       409:
  *         description: El rol ya existe
  */
-router.post('/', asyncHandler(roleController.create));
+router.post('/', authenticateToken, authorizeRoles('admin'), asyncHandler(roleController.create));
 
 /**
  * @swagger
